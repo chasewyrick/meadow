@@ -1,6 +1,8 @@
 Meadow Login Screen for Kedos
 =============
 
+![alt tag](https://raw.githubusercontent.com/iabem97/meadow/master/screenshot.png)
+
 Simple, sleek, and lightweight login screen designed for Kedos Operating System.
 
 Meadow, in technical terms is a LightDM login screen. It is built on top of Acis framework.

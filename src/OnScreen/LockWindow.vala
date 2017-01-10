@@ -23,52 +23,50 @@ using LightDM;
 
 namespace Meadow.OnScreen {
 
-
   public class LockWindow : Gtk.Window {
    
-        /* Fixed holds everything */
+        // Fixed holds everything
         public Fixed _Fixed = new Fixed();
 
-        /* The widgets container */
+        // The widgets container
         public Box Container = new Box(Orientation.VERTICAL, 0);
 
-        /* Contains time and session */
+        // Contains time and session
         public Box TopPanel = new Box(Orientation.HORIZONTAL, 0);
 
-        /* Sessions */
+        // Sessions */
         public OptionsSack _OptionsSack = new OptionsSack();
 
-        /* Users grid stack */
-        public Stack stack = new Stack();
+        // Users grid stack
+        public Stack usersStack = new Stack();
 
-        /* Users grid */
+        // Users grid
         public Widgets.Grid _Grid = new Widgets.Grid();
 
-        /* Selected User Box */
+        // Selected User Box 
         public SelectedUserBox selectedUserBox = new SelectedUserBox();
 
-        /* Login with cloud button */
-        private Button cloudButton = new Button();
-
-
-        /* Screen resolution */
+        // Screen resolution
         unowned int sheight = Gdk.Screen.get_default().height();
         unowned int swidth =  Gdk.Screen.get_default().width();
 
-        /* List of users available */
+        // List of users available
         public UserList _UserList = UserList.get_instance ();
 
-        /* Drawing utility from Acis */
+        // Drawing utility from Acis
         Acis.CairoMethods? main_buffer = null;
 
-        public Gtk.Popover _Popover = null;
-
-        /* Options button to change the session */
+        // Options button to change the session
         Widgets.OptionsButton _OptionsButton = new Widgets.OptionsButton();
 
-        /* Revealer holds powerbox */
-        Revealer revealer = new Revealer();
+        // Pops up when you tap OptionsButton
+        public Gtk.Popover _Popover = null;
 
+        // Revealer holds powerbox
+        Revealer powerBoxRevealer = new Revealer();
+
+        // Spinner shown when authenticating
+        Spinner authentiatingSpinner = new Spinner();
 
         string CSS = "*, *:insensitive {
                          transition: 150ms ease-in;
@@ -111,7 +109,6 @@ namespace Meadow.OnScreen {
             decorated = false;
             Acis.AddAlpha({this});
             Acis.ApplyCSS({this, _Popover}, "*{background-color: rgba(0,0,0,0.0);}");
-            Acis.ApplyCSS({cloudButton}, CSS);
             opacity = 0.0;
 
             _UserControl = new UserControl();
@@ -121,12 +118,14 @@ namespace Meadow.OnScreen {
             resize(swidth, sheight);
             grab_focus();
 
-            stack.set_transition_duration(500);
-            stack.set_transition_type(StackTransitionType.UNDER_UP);
-            stack.halign = Align.CENTER;
-            stack.valign = Align.START;
+            authentiatingSpinner.active = true;
+            authentiatingSpinner.halign = Align.CENTER;
+            authentiatingSpinner.valign = Align.CENTER;
 
-            cloudButton.margin = 5;
+            usersStack.set_transition_duration(500);
+            usersStack.set_transition_type(StackTransitionType.UNDER_UP);
+            usersStack.halign = Align.CENTER;
+            usersStack.valign = Align.START;
 
 
             Sessions = new List<LightDM.Session>();
@@ -176,24 +175,18 @@ namespace Meadow.OnScreen {
             foreach(var _User in _UserList.users)
                 _Grid.append(new User(_User));
 
-            // // Add the cloud
-            // var cloudBox = new Box(Orientation.VERTICAL, 10);
-            // cloudBox.add(new Image.from_file("/System/Resources/Meadow/cloud-login.svg"));
-            // cloudBox.add(new Label("Cloud Login"));
-            // cloudButton.valign = Align.CENTER;
-            // cloudButton.add(cloudBox);
-            // _Grid.append(cloudButton);
 
+            usersStack.add_named(_Grid, "grid");
+            usersStack.add_named(selectedUserBox, "selectedUserBox");
+            usersStack.add_named(authentiatingSpinner, "spinner");
 
-            stack.add_named(_Grid, "grid");
-            stack.add_named(selectedUserBox, "selectedUserBox");
-            stack.set_visible_child_name("grid");
+            usersStack.set_visible_child_name("grid");
 
-            revealer.add(new PowerBox());
+            powerBoxRevealer.add(new PowerBox());
 
             Container.pack_start(new Label(null), true, false);
-            Container.pack_start(stack);
-            Container.pack_end(revealer, false, false);
+            Container.pack_start(usersStack);
+            Container.pack_end(powerBoxRevealer, false, false);
 
 
 
@@ -261,7 +254,7 @@ namespace Meadow.OnScreen {
                 
             Acis.FadeWindow({this}, 10, true, () => {
 
-                revealer.set_reveal_child(true);
+                powerBoxRevealer.set_reveal_child(true);
 
                 });
 
@@ -281,12 +274,24 @@ namespace Meadow.OnScreen {
         }
 
 
+        /* Shows the loading indicator */
+        public void showLoadingIndicator () {
+
+            usersStack.set_transition_type(StackTransitionType.CROSSFADE);
+            usersStack.set_visible_child_name("spinner");
+            powerBoxRevealer.set_reveal_child(false);
+
+
+
+        }
+
         /* Shows the selected user box */
         public void showSelectedUserBox (LightDM.User _User) {
 
-            stack.set_transition_type(StackTransitionType.SLIDE_LEFT);
+            usersStack.set_transition_type(StackTransitionType.SLIDE_LEFT);
             selectedUserBox.setUser(_User);
-            stack.set_visible_child_name("selectedUserBox");
+            usersStack.set_visible_child_name("selectedUserBox");
+            powerBoxRevealer.set_reveal_child(true);
 
 
 
@@ -295,8 +300,8 @@ namespace Meadow.OnScreen {
         /* Hides the selected user box */
         public void hideSelectedUserBox () {
 
-            stack.set_transition_type(StackTransitionType.SLIDE_RIGHT);
-            stack.set_visible_child_name("grid");
+            usersStack.set_transition_type(StackTransitionType.SLIDE_RIGHT);
+            usersStack.set_visible_child_name("grid");
 
 
 

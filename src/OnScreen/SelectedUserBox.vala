@@ -106,6 +106,8 @@ namespace Meadow.OnScreen {
             // Actions
             passcode.entry.icon_press.connect ((pos, event) => {
                 if (pos == Gtk.EntryIconPosition.SECONDARY) {
+
+                    _LockWindow.showLoadingIndicator();
                     _Greeter.authenticate (passcode.entry.text);
                 }
             });
@@ -118,6 +120,7 @@ namespace Meadow.OnScreen {
                     case Gdk.Key.Return:
                     case Gdk.Key.KP_Enter:
                         _Greeter.authenticate (user._User.name);
+                        _LockWindow.showLoadingIndicator();
                         
                         break;  
 
@@ -144,6 +147,7 @@ namespace Meadow.OnScreen {
             /* Wrong passcode */
             _Greeter.show_message.connect(() => {
                 
+                _LockWindow.showSelectedUserBox(user._User);
                 tryAgainRevealer.set_reveal_child(true);
                 passcode.Clear();
             });
@@ -160,8 +164,11 @@ namespace Meadow.OnScreen {
                     /* Hide everything except the Background */
                     _LockWindow.FadeOut();
 
-                } else
+                } else {
+                    
+                    _LockWindow.showSelectedUserBox(user._User);
                     tryAgainRevealer.set_reveal_child(true);
+                }
 
             });
 

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Meadow
+Comment=Light Greeter and Locker for Kedos
+Exec=/usr/share/xgreeters/meadow
+Type=Application
+X-Ubuntu-Gettext-Domain=meadow

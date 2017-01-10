@@ -79,3 +79,5 @@ install(FILES data/Resources/system-shutdown-hover.svg DESTINATION /System/Resou
 install(FILES data/Resources/system-suspend.svg DESTINATION /System/Resources/Meadow/)
 install(FILES data/Resources/system-suspend-click.svg DESTINATION /System/Resources/Meadow/)
 install(FILES data/Resources/system-suspend-hover.svg DESTINATION /System/Resources/Meadow/)
+
+install(FILES data/Resources/authenticate.svg DESTINATION /System/Resources/Meadow/)

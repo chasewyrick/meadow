@@ -244,7 +244,7 @@ namespace Meadow.OnScreen {
             _Background = ImageTools.ScaleToFit(_Background, swidth, sheight);
 
             main_buffer = new Acis.CairoMethods (swidth, sheight);
-            cairo_set_source_pixbuf (main_buffer.context, Utilites.Darken(Utilites.Blur(Utilites.Blur(Utilites.Blur(_Background, 30), 30), 30), 255, 150), 0, 0);
+            cairo_set_source_pixbuf (main_buffer.context, Utilites.Darken(Utilites.Blur(Utilites.Blur(_Background, 30), 30), 255, 150), 0, 0);
             main_buffer.context.paint();
 
             resize(swidth, sheight);

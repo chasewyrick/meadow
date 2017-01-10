@@ -49,7 +49,6 @@ namespace Meadow {
         main_settings.set("gtk-xft-dpi", (int) (1042 * 100), null);
         main_settings.set("gtk-xft-antialias", 1, null);
         main_settings.set("gtk-xft-rgba" , "rgba", null);
-        main_settings.set("gtk-theme" , "Adwaita", null);
 
         /* Set the cursor to not be the crap default */
         Gdk.get_default_root_window ().set_cursor (new Gdk.Cursor (Gdk.CursorType.LEFT_PTR));

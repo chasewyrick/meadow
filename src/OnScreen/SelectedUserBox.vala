@@ -80,7 +80,7 @@ namespace Meadow.OnScreen {
                          background-image: none; 
                          border-image: none;
                          box-shadow: none;
-                         font: 16px;
+                         font-size: 12px;
                          }";
 
     	public SelectedUserBox () {
@@ -93,8 +93,8 @@ namespace Meadow.OnScreen {
             Acis.ApplyCSS({passcode.entry}, passcodeCSS);
             Acis.AddAlpha({backButton});
 
-            passcode.entry.set_icon_from_icon_name (Gtk.EntryIconPosition.SECONDARY, "go-jump-symbolic");
-            tryAgainLabel.set_markup("<span color='white' font='Droid Sans 9'>Wrong Passcode</span>");
+            passcode.entry.set_icon_from_pixbuf (Gtk.EntryIconPosition.SECONDARY, new Gdk.Pixbuf.from_file("/System/Resources/Meadow/authenticate.svg"));
+            tryAgainLabel.set_markup("<span color='white' font='Open Sans 9'>Wrong Passcode</span>");
 
             verticalBox.halign = Align.START;
             verticalBox.valign = Align.CENTER;

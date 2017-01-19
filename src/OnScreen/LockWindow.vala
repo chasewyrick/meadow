@@ -108,7 +108,7 @@ namespace Meadow.OnScreen {
             stick ();
             decorated = false;
             Acis.AddAlpha({this});
-            Acis.ApplyCSS({this, _Popover}, "*{background-color: rgba(0,0,0,0.0);}");
+            Acis.ApplyCSS({this}, "*{background-color: rgba(0,0,0,0.0);}");
             opacity = 0.0;
 
             _UserControl = new UserControl();

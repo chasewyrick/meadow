@@ -233,14 +233,24 @@ namespace Meadow.OnScreen {
             File UserDir = File.new_for_path(@"/home/$(_UserList.users.nth_data(0).name)/.User/");
             File BackgroundFile = UserDir.get_child("Background.prop");
 
-            string BackgroundLocation = null;
+            string backgroundLocation = null;
 
-            var BackgroundKeyfile = new KeyFile();
+            var backgroundKeyfile = new KeyFile();
 
-            BackgroundKeyfile.load_from_file(BackgroundFile.get_path(), 0);
-            BackgroundLocation = BackgroundKeyfile.get_string("UserPreferences", "BackgroundPath");
+            backgroundKeyfile.load_from_file(BackgroundFile.get_path(), 0);
+            backgroundLocation = backgroundKeyfile.get_string("UserPreferences", "BackgroundPath");
 
-            var _Background = new Pixbuf.from_file(BackgroundLocation);
+            // Check if background exists and if valid
+            var backgroundFile = File.new_for_path(backgroundLocation);
+
+            if(!backgroundFile.query_exists() || (backgroundFile.query_info("standard::*", FileQueryInfoFlags.NONE).get_size() == 0)) {
+
+                // Set background to default (TODO: Change me after building the wallpapers pkg)
+                backgroundLocation = "/System/Resources/Meadow/default-background.jpg";
+
+            }
+
+            var _Background = new Pixbuf.from_file(backgroundLocation);
             _Background = ImageTools.ScaleToFit(_Background, swidth, sheight);
 
             main_buffer = new Acis.CairoMethods (swidth, sheight);

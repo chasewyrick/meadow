@@ -81,7 +81,16 @@ namespace Meadow {
             SetLabel(_User.real_name);
             Acis.ApplyCSS({mainContainer, button}, CSS);
 
-            usrpic.set_from_pixbuf(new Gdk.Pixbuf.from_file_at_scale(_User.image, 96, 96, false));
+            // Check if user's image exists
+            var imageFile = File.new_for_path(_User.image);
+            if(imageFile.query_exists()) {
+
+                // Check if file size is zero
+                if(imageFile.query_info("standard::*", FileQueryInfoFlags.NONE).get_size() == 0)
+                    usrpic.set_from_pixbuf(new Gdk.Pixbuf.from_file_at_scale("/System/Resources/Avatars/piano.jpg", 96, 96, false)); // Set to default
+                else
+                    usrpic.set_from_pixbuf(new Gdk.Pixbuf.from_file_at_scale(_User.image, 96, 96, false));
+            }
 
 
             button.margin = 7;

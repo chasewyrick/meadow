@@ -18,7 +18,7 @@ set (PKGDATADIR "${DATADIR}/meadow")
 set (CMAKE_INSTALL_PREFIX /usr)
 set (GETTEXT_PACKAGE "meadow")
 set (RELEASE_NAME "summit")
-set (VERSION "0.8")
+set (VERSION "0.9")
 set (VERSION_INFO "BETA")
 set (CMAKE_C_FLAGS "-ggdb")
 
@@ -81,3 +81,8 @@ install(FILES data/Resources/system-suspend-click.svg DESTINATION /System/Resour
 install(FILES data/Resources/system-suspend-hover.svg DESTINATION /System/Resources/Meadow/)
 
 install(FILES data/Resources/authenticate.svg DESTINATION /System/Resources/Meadow/)
+
+install(FILES data/Resources/default-background.jpg DESTINATION /System/Resources/Meadow/)
+
+install (CODE "message(\" -- Copying avatars ..\")")
+install(DIRECTORY data/Avatars DESTINATION /System/Resources)
